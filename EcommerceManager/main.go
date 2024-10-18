@@ -3,12 +3,14 @@ package main
 import (
 	"Taskmanager/EcommerceManager/database"
 	handler "Taskmanager/EcommerceManager/handlers"
-
+	"Taskmanager/EcommerceManager/logutil"
+	"log"
 	"github.com/gin-gonic/gin"
 )
 
 func init() {
 	database.Initialise()
+	logutil.Initialise()
 }
 
 func main() {
@@ -19,6 +21,7 @@ func main() {
 	handler.RegisterOrderApis(router)
 	err := router.Run()
 	if err != nil {
+		log.Print("[ERROR] failed to start server: ", err)
 		return
 	}
 }

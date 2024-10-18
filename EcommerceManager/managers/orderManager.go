@@ -3,8 +3,9 @@ package managers
 import (
 	"Taskmanager/EcommerceManager/database"
 	"Taskmanager/EcommerceManager/models"
-	"fmt"
+	"log"
 	"net/http"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -12,7 +13,7 @@ func CreateOrder(ctx *gin.Context) {
 	orderData := models.Order{}
 	err := ctx.BindJSON(&orderData)
 	if err != nil {
-		fmt.Println("error in binding post data", err)
+		log.Print("[ERROR] error in binding post data", err)
 		return
 	}
 	{
