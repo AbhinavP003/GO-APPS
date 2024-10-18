@@ -17,5 +17,5 @@ func Initialise() {
 	}
 
 	// Migrate the schema
-	DB.AutoMigrate(&models.Hierarchy{}, &models.Order{}, &models.Product{}, &models.Variant{})
+	DB.AutoMigrate(&models.Category{}, &models.Order{}, &models.Product{}, &models.Variant{})
 }

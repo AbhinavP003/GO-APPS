@@ -15,7 +15,7 @@ func init() {
 
 func main() {
 	router := gin.Default()
-	handler.RegisterHierarchyApis(router)
+	handler.RegisterCategoryApis(router)
 	handler.RegisterProductApis(router)
 	handler.RegisterVariantApis(router)
 	handler.RegisterOrderApis(router)
