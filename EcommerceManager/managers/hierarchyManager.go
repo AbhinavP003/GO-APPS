@@ -4,8 +4,9 @@ import (
 	"Taskmanager/EcommerceManager/database"
 	"Taskmanager/EcommerceManager/models"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 func CreateHierarchy(ctx *gin.Context) {
@@ -16,9 +17,8 @@ func CreateHierarchy(ctx *gin.Context) {
 		return
 	}
 	{
-		fmt.Println(hierarchyData)
 		database.DB.Create(&hierarchyData)
-		ctx.JSON(http.StatusOK, gin.H{"msg": "ok"})
+		ctx.JSON(http.StatusOK, gin.H{"msg": "Created hierarchy"})
 	}
 }
 
@@ -26,13 +26,12 @@ func DeleteHierarchy(ctx *gin.Context) {
 	hierarchyId := ctx.Param("id")
 	{
 		database.DB.Delete(&models.Hierarchy{}, hierarchyId)
-		ctx.JSON(http.StatusOK, gin.H{"msg": "user deleted"})
+		ctx.JSON(http.StatusOK, gin.H{"msg": "Hierarchy deleted with id"})
 	}
 }
 
 func ListHierarchy(ctx *gin.Context) {
-	hierarchies := database.DB.Find(&models.Hierarchy{})
-	{
-		ctx.JSON(http.StatusOK, hierarchies)
-	}
+	var hierarchies []models.Hierarchy
+	database.DB.Find(&hierarchies)
+	ctx.JSON(http.StatusOK, gin.H{"data": hierarchies})
 }

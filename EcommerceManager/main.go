@@ -2,7 +2,8 @@ package main
 
 import (
 	"Taskmanager/EcommerceManager/database"
-	"Taskmanager/EcommerceManager/handlers"
+	handler "Taskmanager/EcommerceManager/handlers"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -12,7 +13,10 @@ func init() {
 
 func main() {
 	router := gin.Default()
-	hierarchyHandler.RegisterHierarchyApis(router)
+	handler.RegisterHierarchyApis(router)
+	handler.RegisterProductApis(router)
+	handler.RegisterVariantApis(router)
+	handler.RegisterOrderApis(router)
 	err := router.Run()
 	if err != nil {
 		return
