@@ -4,8 +4,7 @@ import "gorm.io/gorm"
 
 type Order struct {
 	gorm.Model
-	OrderId    uint
-	Status     bool
-	Items      []uint `gorm:"type:json;default:null"`
-	OrderTotal uint
+	Status     bool   `json:"status"`
+	Items      []uint `json:"items" gorm:"type:json;default:null"`
+	OrderTotal uint   `json:"order_total" gorm:"size:255"`
 }

@@ -4,9 +4,8 @@ import "gorm.io/gorm"
 
 type Product struct {
 	gorm.Model
-	ProductId     uint
-	Name          string
-	Description   string
-	ImageUrl      string
-	ChildVariants []uint `gorm:"type:json;default:null"`
+	Name          string    `json:"name" gorm:"size:255"`
+	Description   string    `json:"description" gorm:"size:255"`
+	ImageUrl      string    `json:"image_url" gorm:"size:255"`
+	ChildVariants []Variant `gorm:"foreignKey:ProductId"`
 }

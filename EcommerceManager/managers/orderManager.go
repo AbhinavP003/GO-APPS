@@ -24,7 +24,7 @@ func CreateOrder(ctx *gin.Context) {
 func DeleteOrder(ctx *gin.Context) {
 	orderId := ctx.Param("id")
 	{
-		database.DB.Delete(&models.Product{}, orderId)
+		database.DB.Delete(&models.Order{}, orderId)
 		ctx.JSON(http.StatusOK, gin.H{"msg": "Order deleted with id"})
 	}
 }

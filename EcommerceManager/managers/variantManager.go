@@ -9,7 +9,7 @@ import (
 )
 
 func CreateVariant(ctx *gin.Context) {
-	variantData := models.Product{}
+	variantData := models.Variant{}
 	err := ctx.BindJSON(&variantData)
 	if err != nil {
 		fmt.Println("error in binding post data", err)
@@ -17,20 +17,20 @@ func CreateVariant(ctx *gin.Context) {
 	}
 	{
 		database.DB.Create(&variantData)
-		ctx.JSON(http.StatusOK, gin.H{"msg": "Created Product"})
+		ctx.JSON(http.StatusOK, gin.H{"msg": "Created Variant"})
 	}
 }
 
 func DeleteVariant(ctx *gin.Context) {
 	variantId := ctx.Param("id")
 	{
-		database.DB.Delete(&models.Product{}, variantId)
-		ctx.JSON(http.StatusOK, gin.H{"msg": "Product deleted with id"})
+		database.DB.Delete(&models.Variant{}, variantId)
+		ctx.JSON(http.StatusOK, gin.H{"msg": "Variant deleted with id"})
 	}
 }
 
 func ListVariant(ctx *gin.Context) {
-	var variants []models.Hierarchy
+	var variants []models.Variant
 	database.DB.Find(&variants)
 	ctx.JSON(http.StatusOK, gin.H{"data": variants})
 }

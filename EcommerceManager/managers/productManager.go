@@ -30,7 +30,7 @@ func DeleteProduct(ctx *gin.Context) {
 }
 
 func ListProduct(ctx *gin.Context) {
-	var products []models.Hierarchy
+	var products []models.Product
 	database.DB.Find(&products)
 	ctx.JSON(http.StatusOK, gin.H{"data": products})
 }

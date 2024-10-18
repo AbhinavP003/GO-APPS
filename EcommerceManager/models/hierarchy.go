@@ -6,7 +6,7 @@ import (
 
 type Hierarchy struct {
 	gorm.Model
-	CategoryName    string `json:"category_name" gorm:"size:255"`
-	ChildCategories string `json:"child_categories" gorm:"size:255;default:null"`
+	CategoryName    string      `json:"category_name" gorm:"size:255"`
+	ChildCategories []Hierarchy `json:"child_categories" gorm:"foreignKey:ID"`
+	Products        []Product   `json:"products" gorm:"foreignKey:ID"`
 }
-
