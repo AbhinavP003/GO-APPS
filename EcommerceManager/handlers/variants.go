@@ -12,4 +12,5 @@ func RegisterVariantApis(router *gin.Engine) {
 	variantsGroup.DELETE(":id", managers.DeleteVariant)
 	variantsGroup.GET("", managers.ListVariant)
 	variantsGroup.GET(":id", managers.ListOneVariant)
+	variantsGroup.PUT(":id", managers.UpdateVariant)
 }

@@ -74,3 +74,33 @@ func ListOneCategory(ctx *gin.Context) {
 	// Return the fetched category with nested relations
 	ctx.JSON(http.StatusOK, category)
 }
+
+func UpdateCategory(ctx *gin.Context) {
+	categoryId, conv_err := strconv.Atoi(ctx.Param("id"))
+	if conv_err != nil {
+		log.Print("[ERROR] error in converting category id", conv_err)
+		return
+	}
+
+	var updates map[string]interface{}
+
+	// Bind the JSON body to the updates map
+	err := ctx.ShouldBindJSON(&updates)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
+		return
+	}
+
+	// Perform the update with a WHERE condition
+	result := database.DB.Model(&models.Category{}).
+		Where("id = ?", categoryId).
+		Updates(updates)
+
+	if result.Error != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update category"})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"message": "Category updated successfully"})
+
+}
