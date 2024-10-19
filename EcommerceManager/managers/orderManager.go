@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"io"
 	"log"
+	"reflect"
 
 	// "log"
 	"net/http"
@@ -22,8 +23,18 @@ func CreateOrder(ctx *gin.Context) {
 	if orderPlaced {
 		order := models.Order{}
 		order.Status = "Accepted"
-		items := map[string]interface{}{"variantId": jsonMap["variant_id"], "quantity": jsonMap["quantity"], "price": jsonMap["mrp"]}
-		order.Items = items
+		price, ok := jsonMap["mrp"].(float64)
+		if !ok {
+			log.Printf("Expected an integer for 'mrp', but got %v", reflect.TypeOf(jsonMap["mrp"]))
+			return
+		}
+		quantity, ok := jsonMap["quantity"].(float64)
+		if !ok {
+			log.Printf("Expected an integer for 'quantity', but got %v", reflect.TypeOf(jsonMap["quantity"]))
+			return
+		}
+		order.Price = uint(price)
+		order.Quantity = uint(quantity)
 		result := database.DB.Create(&order)
 		common.LogStatus(ctx, order.ID, "", "created", result.Error, "order")
 		return
@@ -38,29 +49,48 @@ func ListOrder(ctx *gin.Context) {
 }
 
 func placeOrder(orderData map[string]interface{}) (orderPlaced bool) {
+	// fetching required variant row
 	variantId := orderData["variant_id"]
-	quantity, ok := orderData["quantity"].(uint)
-	if !ok {
-		log.Print("Product input quantity not an integer ")
-		return
-	}
-
 	variant := models.Variant{}
 	database.DB.First(&variant, variantId)
-	if quantity > variant.Quantity {
+
+	quantity, ok := orderData["quantity"].(float64)
+	if !ok {
+		log.Printf("Expected an integer for 'quantity', but got %v", reflect.TypeOf(orderData["quantity"]))
+		return
+	}
+	if quantity > float64(variant.Quantity) {
 		log.Printf("Selected stock quantity not available, remaining stock count: %d", variant.Quantity)
 		return
 	}
-	updatedQuantity := variant.Quantity - quantity
-	result := database.DB.Model(&variant).Where("id = ?", variantId).Update("quantity", updatedQuantity)
-	if result.Error != nil {
-		log.Printf("Failed to update stock quantity: %v", result.Error)
+	// creating order in Orders table
+	order := models.Order{}
+	order.Status = "Accepted"
+	price, ok := orderData["mrp"].(float64)
+	if !ok {
+		log.Printf("Expected an integer for 'mrp', but got %v", reflect.TypeOf(orderData["mrp"]))
 		return
 	}
-	if result.RowsAffected == 0 {
+	order.Price = uint(price)
+	order.Quantity = uint(quantity)
+	result := database.DB.Create(&order)
+	if result.Error != nil {
+		log.Printf("Failed creating order %v", result.Error)
+		return
+	}
+
+	// updating variant table with new stock quantity
+	updatedQuantity := float64(variant.Quantity) - quantity
+	variant_res := database.DB.Model(&variant).Where("id = ?", variantId).Update("quantity", updatedQuantity)
+	if variant_res.Error != nil {
+		log.Printf("Failed to update stock quantity: %v", variant_res.Error)
+		return
+	}
+	if variant_res.RowsAffected == 0 {
 		log.Printf("No variant found with id %d", variantId)
 		return
 	}
+
 	return true
 
 }
