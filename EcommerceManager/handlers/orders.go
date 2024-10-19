@@ -10,4 +10,5 @@ func RegisterOrderApis(router *gin.Engine) {
 	ordersGroup := router.Group("/api/order")
 	ordersGroup.POST("", managers.CreateOrder)
 	ordersGroup.GET("", managers.ListOrder)
+	ordersGroup.GET(":id", managers.ListOneOrder)
 }

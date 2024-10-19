@@ -11,4 +11,5 @@ func RegisterProductApis(router *gin.Engine) {
 	prodcutGroup.POST("", managers.CreateProduct)
 	prodcutGroup.DELETE(":id", managers.DeleteProduct)
 	prodcutGroup.GET("", managers.ListProduct)
+	prodcutGroup.GET(":id", managers.ListOneProduct)
 }

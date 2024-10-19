@@ -16,6 +16,9 @@ func init() {
 
 //TODO: understand models
 //TODO: ask about handlers which show at startup
+//TODO: order details should be made proper, price should be fechted from variants table
+// and order total should be calculated acc to quantity of ordered
+//TODO: get one category fails to bring all childs
 
 func main() {
 	router := gin.Default()

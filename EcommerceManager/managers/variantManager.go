@@ -37,3 +37,13 @@ func ListVariant(ctx *gin.Context) {
 	database.DB.Find(&variants)
 	ctx.JSON(http.StatusOK, gin.H{"data": variants})
 }
+func ListOneVariant(ctx *gin.Context) {
+	variantId, conv_err := strconv.Atoi(ctx.Param("id"))
+	if conv_err != nil {
+		log.Print("[ERROR] error in converting variant id", conv_err)
+		return
+	}
+	var variants []models.Variant
+	database.DB.First(&variants, variantId)
+	ctx.JSON(http.StatusOK, variants)
+}

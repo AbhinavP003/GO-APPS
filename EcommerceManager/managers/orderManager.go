@@ -8,6 +8,7 @@ import (
 	"io"
 	"log"
 	"reflect"
+	"strconv"
 
 	// "log"
 	"net/http"
@@ -46,6 +47,16 @@ func ListOrder(ctx *gin.Context) {
 	var orders []models.Order
 	database.DB.Find(&orders)
 	ctx.JSON(http.StatusOK, gin.H{"data": orders})
+}
+func ListOneOrder(ctx *gin.Context) {
+	orderId, conv_err := strconv.Atoi(ctx.Param("id"))
+	if conv_err != nil {
+		log.Print("[ERROR] error in converting order id", conv_err)
+		return
+	}
+	var order []models.Order
+	database.DB.First(&order, orderId)
+	ctx.JSON(http.StatusOK, order)
 }
 
 func placeOrder(orderData map[string]interface{}) (orderPlaced bool) {

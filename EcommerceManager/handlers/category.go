@@ -10,5 +10,6 @@ func RegisterCategoryApis(router *gin.Engine) {
 	categoryGroup := router.Group("/api/category")
 	categoryGroup.POST("", managers.CreateCategory)
 	categoryGroup.DELETE(":id", managers.DeleteCategory)
+	categoryGroup.GET(":id", managers.ListOneCategory)
 	categoryGroup.GET("", managers.ListCategory)
 }

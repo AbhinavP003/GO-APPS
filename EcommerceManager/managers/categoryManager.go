@@ -25,18 +25,13 @@ func CreateCategory(ctx *gin.Context) {
 func DeleteCategory(ctx *gin.Context) {
 	categoryId, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
-		log.Print("[ERROR] error in converting variant id", err)
+		log.Print("[ERROR] error in converting category id", err)
 		return
 	}
 	result := database.DB.Delete(&models.Category{}, categoryId)
 	common.LogStatus(ctx, uint(categoryId), "", "deleted", result.Error, "category")
 }
 
-//	func ListCategory(ctx *gin.Context) {
-//		var categories []models.Category
-//		database.DB.Find(&categories)
-//		ctx.JSON(http.StatusOK, gin.H{"Categories": categories})
-//	}
 func ListCategory(ctx *gin.Context) {
 	var categories []models.Category
 
@@ -54,4 +49,28 @@ func ListCategory(ctx *gin.Context) {
 
 	// Respond with the categories in JSON format
 	ctx.JSON(http.StatusOK, categories)
+}
+
+func ListOneCategory(ctx *gin.Context) {
+	categoryId, conv_err := strconv.Atoi(ctx.Param("id"))
+	if conv_err != nil {
+		log.Print("[ERROR] error in converting category id", conv_err)
+		return
+	}
+	var category models.Category
+	err := database.DB.
+		Preload("ChildCategories.ChildCategories").        // Preload nested child categories
+		Preload("ChildCategories.ChildProducts").          // Preload products under each child category
+		Preload("ChildCategories.ChildProducts.Variants"). // Preload variants under each child product
+		Where("id = ?", categoryId).                       // Fetch the category by ID
+		First(&category).Error
+
+	if err != nil {
+		log.Printf("Error fetching category: %v", err)
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch category"})
+		return
+	}
+
+	// Return the fetched category with nested relations
+	ctx.JSON(http.StatusOK, category)
 }
