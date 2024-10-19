@@ -5,6 +5,7 @@ import (
 	handler "Taskmanager/EcommerceManager/handlers"
 	"Taskmanager/EcommerceManager/logutil"
 	"log"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -12,6 +13,9 @@ func init() {
 	database.Initialise()
 	logutil.Initialise()
 }
+
+//TODO: understand models
+//TODO: ask about handlers which show at startup
 
 func main() {
 	router := gin.Default()
