@@ -1,10 +1,13 @@
 package managers
 
 import (
+	"Taskmanager/EcommerceManager/common"
 	"Taskmanager/EcommerceManager/database"
 	"Taskmanager/EcommerceManager/models"
 	"log"
 	"net/http"
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -12,21 +15,21 @@ func CreateProduct(ctx *gin.Context) {
 	productData := models.Product{}
 	err := ctx.BindJSON(&productData)
 	if err != nil {
-		log.Print("[ERROR] error in binding post data", err)
+		log.Print("[ERROR] error in binding product data", err)
 		return
 	}
-	{
-		database.DB.Create(&productData)
-		ctx.JSON(http.StatusOK, gin.H{"msg": "Created Product"})
-	}
+	result := database.DB.Create(&productData)
+	common.LogStatus(ctx, productData.ID, productData.Name, "created", result.Error, "product")
 }
 
 func DeleteProduct(ctx *gin.Context) {
-	productId := ctx.Param("id")
-	{
-		database.DB.Delete(&models.Product{}, productId)
-		ctx.JSON(http.StatusOK, gin.H{"msg": "Product deleted with id"})
+	productId, err := strconv.Atoi(ctx.Param("id"))
+	if err != nil {
+		log.Print("[ERROR] converting product id failed", err)
+		return
 	}
+	result := database.DB.Delete(&models.Product{}, productId)
+	common.LogStatus(ctx, uint(productId), "", "deleted", result.Error, "product")
 }
 
 func ListProduct(ctx *gin.Context) {
