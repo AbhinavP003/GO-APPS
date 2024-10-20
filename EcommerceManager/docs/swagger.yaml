@@ -1,0 +1,171 @@
+definitions:
+  models.Category:
+    type: object
+  models.Order:
+    type: object
+  models.Product:
+    type: object
+  models.Variant:
+    type: object
+info:
+  contact: {}
+paths:
+  /api/category:
+    delete:
+      description: Delete any category using their id
+      produces:
+      - application/json
+      responses: {}
+      summary: Delete category
+      tags:
+      - /api/category
+    get:
+      description: List categories
+      produces:
+      - application/json
+      responses: {}
+      summary: List all categories
+      tags:
+      - /api/category
+    post:
+      consumes:
+      - application/json
+      description: Create category
+      parameters:
+      - description: Category data
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/models.Category'
+      produces:
+      - application/json
+      responses: {}
+      summary: Create category
+      tags:
+      - /api/category
+    put:
+      consumes:
+      - application/json
+      description: Update any category using their id
+      produces:
+      - application/json
+      responses: {}
+      summary: Update category
+      tags:
+      - /api/category
+  /api/orders:
+    get:
+      description: List any order using their id
+      produces:
+      - application/json
+      responses: {}
+      summary: List all orders
+      tags:
+      - /api/orders
+    post:
+      consumes:
+      - application/json
+      description: Create order
+      parameters:
+      - description: Orders data
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/models.Order'
+      produces:
+      - application/json
+      responses: {}
+      summary: Update order
+      tags:
+      - /api/orders
+  /api/product:
+    delete:
+      description: Delete any product using their id
+      produces:
+      - application/json
+      responses: {}
+      summary: Delete product
+      tags:
+      - /api/product
+    get:
+      description: Get a list of all products, including their variants.
+      produces:
+      - application/json
+      responses: {}
+      summary: List all products
+      tags:
+      - /api/product
+    post:
+      consumes:
+      - application/json
+      description: Create product
+      parameters:
+      - description: Product data
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/models.Product'
+      produces:
+      - application/json
+      responses: {}
+      summary: Update product
+      tags:
+      - /api/product
+    put:
+      consumes:
+      - application/json
+      description: Update any product using their id
+      produces:
+      - application/json
+      responses: {}
+      summary: Update product
+      tags:
+      - /api/product
+  /api/variants:
+    delete:
+      description: Delete any variant using their id
+      produces:
+      - application/json
+      responses: {}
+      summary: Delete variant
+      tags:
+      - /api/variants
+    get:
+      description: Get a list of all variants
+      produces:
+      - application/json
+      responses: {}
+      summary: List all variants
+      tags:
+      - /api/variants
+    post:
+      consumes:
+      - application/json
+      description: Create variant
+      parameters:
+      - description: Variant data
+        in: body
+        name: variant
+        required: true
+        schema:
+          $ref: '#/definitions/models.Variant'
+      produces:
+      - application/json
+      responses: {}
+      summary: Create variant
+      tags:
+      - /api/variants
+    put:
+      consumes:
+      - application/json
+      description: Update any variant using their id
+      produces:
+      - application/json
+      responses: {}
+      summary: Update variant
+      tags:
+      - /api/variants
+swagger: "2.0"
