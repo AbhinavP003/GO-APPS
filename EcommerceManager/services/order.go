@@ -62,7 +62,11 @@ func placeOrder(orderData map[string]interface{}) (orderPlaced bool) {
 	// fetching required variant row
 	variantId := orderData["variant_id"]
 	variant := models.Variant{}
-	database.DB.First(&variant, variantId)
+	varResult := database.DB.First(&variant, variantId)
+	if varResult.Error != nil {
+		log.Printf("Failed to find variant with id %d", variantId)
+		return
+	}
 
 	quantity, ok := orderData["quantity"].(float64)
 	if !ok {
