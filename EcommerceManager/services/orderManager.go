@@ -1,4 +1,4 @@
-package managers
+package services
 
 import (
 	"Taskmanager/EcommerceManager/database"
@@ -22,6 +22,7 @@ func CreateOrder(ctx *gin.Context) {
 	orderPlaced := placeOrder(jsonMap)
 	if orderPlaced {
 		ctx.JSON(http.StatusOK, gin.H{"msg": "Successfully created order"})
+		return
 	}
 	ctx.JSON(http.StatusOK, gin.H{"msg": "Failed creating Order"})
 }
@@ -47,6 +48,7 @@ func placeOrder(orderData map[string]interface{}) (orderPlaced bool) {
 	variantId := orderData["variant_id"]
 	variant := models.Variant{}
 	database.DB.First(&variant, variantId)
+
 
 	quantity, ok := orderData["quantity"].(float64)
 	if !ok {

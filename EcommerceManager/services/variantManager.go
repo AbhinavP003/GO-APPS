@@ -1,4 +1,4 @@
-package managers
+package services
 
 import (
 	"Taskmanager/EcommerceManager/common"

@@ -1,16 +1,16 @@
 package handler
 
 import (
-	"Taskmanager/EcommerceManager/managers"
+	"Taskmanager/EcommerceManager/services"
 
 	"github.com/gin-gonic/gin"
 )
 
 func RegisterVariantApis(router *gin.Engine) {
 	variantsGroup := router.Group("/api/variants")
-	variantsGroup.POST("", managers.CreateVariant)
-	variantsGroup.DELETE(":id", managers.DeleteVariant)
-	variantsGroup.GET("", managers.ListVariant)
-	variantsGroup.GET(":id", managers.ListOneVariant)
-	variantsGroup.PUT(":id", managers.UpdateVariant)
+	variantsGroup.POST("", services.CreateVariant)
+	variantsGroup.DELETE(":id", services.DeleteVariant)
+	variantsGroup.GET("", services.ListVariant)
+	variantsGroup.GET(":id", services.ListOneVariant)
+	variantsGroup.PUT(":id", services.UpdateVariant)
 }

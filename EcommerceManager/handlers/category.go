@@ -1,16 +1,16 @@
 package handler
 
 import (
-	"Taskmanager/EcommerceManager/managers"
+	services "Taskmanager/EcommerceManager/services"
 
 	"github.com/gin-gonic/gin"
 )
 
 func RegisterCategoryApis(router *gin.Engine) {
 	categoryGroup := router.Group("/api/category")
-	categoryGroup.POST("", managers.CreateCategory)
-	categoryGroup.DELETE(":id", managers.DeleteCategory)
-	categoryGroup.GET(":id", managers.ListOneCategory)
-	categoryGroup.GET("", managers.ListCategory)
-	categoryGroup.PUT(":id", managers.UpdateCategory)
+	categoryGroup.POST("", services.CreateCategory)
+	categoryGroup.DELETE(":id", services.DeleteCategory)
+	categoryGroup.GET(":id", services.ListOneCategory)
+	categoryGroup.GET("", services.ListCategory)
+	categoryGroup.PUT(":id", services.UpdateCategory)
 }

@@ -1,16 +1,16 @@
 package handler
 
 import (
-	"Taskmanager/EcommerceManager/managers"
+	"Taskmanager/EcommerceManager/services"
 
 	"github.com/gin-gonic/gin"
 )
 
 func RegisterProductApis(router *gin.Engine) {
 	prodcutGroup := router.Group("/api/product")
-	prodcutGroup.POST("", managers.CreateProduct)
-	prodcutGroup.DELETE(":id", managers.DeleteProduct)
-	prodcutGroup.GET("", managers.ListProduct)
-	prodcutGroup.GET(":id", managers.ListOneProduct)
-	prodcutGroup.PUT(":id", managers.UpdateProduct)
+	prodcutGroup.POST("", services.CreateProduct)
+	prodcutGroup.DELETE(":id", services.DeleteProduct)
+	prodcutGroup.GET("", services.ListProduct)
+	prodcutGroup.GET(":id", services.ListOneProduct)
+	prodcutGroup.PUT(":id", services.UpdateProduct)
 }
