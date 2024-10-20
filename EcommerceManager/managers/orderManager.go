@@ -1,7 +1,6 @@
 package managers
 
 import (
-	"Taskmanager/EcommerceManager/common"
 	"Taskmanager/EcommerceManager/database"
 	"Taskmanager/EcommerceManager/models"
 	"encoding/json"
@@ -22,23 +21,7 @@ func CreateOrder(ctx *gin.Context) {
 	json.Unmarshal(bodyAsByteArray, &jsonMap)
 	orderPlaced := placeOrder(jsonMap)
 	if orderPlaced {
-		order := models.Order{}
-		order.Status = "Accepted"
-		price, ok := jsonMap["mrp"].(float64)
-		if !ok {
-			log.Printf("Expected an integer for 'mrp', but got %v", reflect.TypeOf(jsonMap["mrp"]))
-			return
-		}
-		quantity, ok := jsonMap["quantity"].(float64)
-		if !ok {
-			log.Printf("Expected an integer for 'quantity', but got %v", reflect.TypeOf(jsonMap["quantity"]))
-			return
-		}
-		order.Price = uint(price)
-		order.Quantity = uint(quantity)
-		result := database.DB.Create(&order)
-		common.LogStatus(ctx, order.ID, "", "created", result.Error, "order")
-		return
+		ctx.JSON(http.StatusOK, gin.H{"msg": "Successfully created order"})
 	}
 	ctx.JSON(http.StatusOK, gin.H{"msg": "Failed creating Order"})
 }
@@ -77,12 +60,8 @@ func placeOrder(orderData map[string]interface{}) (orderPlaced bool) {
 	// creating order in Orders table
 	order := models.Order{}
 	order.Status = "Accepted"
-	price, ok := orderData["mrp"].(float64)
-	if !ok {
-		log.Printf("Expected an integer for 'mrp', but got %v", reflect.TypeOf(orderData["mrp"]))
-		return
-	}
-	order.Price = uint(price)
+	totalPrice := variant.MRP * uint(quantity)
+	order.OrderTotal = totalPrice
 	order.Quantity = uint(quantity)
 	result := database.DB.Create(&order)
 	if result.Error != nil {
