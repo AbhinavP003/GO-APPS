@@ -8,6 +8,6 @@ type Category struct {
 	ParentCategory  *Category `json:"-" gorm:"foreignKey:ParentId"`
 	ParentId        *uint
 	ChildCategories []Category `json:"child_categories,omitempty" gorm:"foreignKey:ParentId"`
-	ChildProducts   []Product  `json:"child_products,omitempty" gorm:"foreignKey:CategoryID"`
+	ChildProducts   []Product  `json:"child_products,omitempty"`
 	Variants        []Variant  `json:"variants,omitempty" gorm:"foreignKey:ProductId"`
 }
