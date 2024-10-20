@@ -14,12 +14,9 @@ func init() {
 	logutil.Initialise()
 }
 
-//TODO: understand models
-//TODO: ask about handlers which show at startup
-//TODO: get one category fails to bring all childs
-//TODO: add defer
-
 func main() {
+	sqlDb, _ := database.DB.DB()
+	defer sqlDb.Close()
 	router := gin.Default()
 	handler.RegisterCategoryApis(router)
 	handler.RegisterProductApis(router)
