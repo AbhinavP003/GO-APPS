@@ -142,3 +142,8 @@ GORM will automatically create and manage the SQLite schema for the models upon 
 ## Postman collection
 
 -https://www.postman.com/maintenance-geologist-73425626/ecommerce-manager/collection/dbzmvfz/category?action=share&creator=22805703
+
+
+# Swagger docs
+Swagger UI  can be accessed for running application on : 
+http://localhost:8080/swagger/index.html
