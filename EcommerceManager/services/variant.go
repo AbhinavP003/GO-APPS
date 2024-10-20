@@ -11,6 +11,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// CreateVariant godoc
+// @Summary Create variant
+// @Description Create variant
+// @Tags /api/variants
+// @Accept  json
+// @Produce  json
+// @Param variant body models.Variant true "Variant data"
+// @Router /api/variants [post]
 func CreateVariant(ctx *gin.Context) {
 	variantData := models.Variant{}
 	err := ctx.BindJSON(&variantData)
@@ -22,6 +30,12 @@ func CreateVariant(ctx *gin.Context) {
 	common.LogStatus(ctx, variantData.ID, variantData.Name, "created", result.Error, "variant")
 }
 
+// DeleteVariant godoc
+// @Summary Delete variant
+// @Description Delete any variant using their id
+// @Tags /api/variants
+// @Produce  json
+// @Router /api/variants [delete]
 func DeleteVariant(ctx *gin.Context) {
 	variantId, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
@@ -32,11 +46,18 @@ func DeleteVariant(ctx *gin.Context) {
 	common.LogStatus(ctx, uint(variantId), "", "deleted", result.Error, "variant")
 }
 
+// ListVariant godoc
+// @Summary List all variants
+// @Description Get a list of all variants
+// @Tags /api/variants
+// @Produce  json
+// @Router /api/variants [get]
 func ListVariant(ctx *gin.Context) {
 	var variants []models.Variant
 	database.DB.Find(&variants)
 	ctx.JSON(http.StatusOK, gin.H{"data": variants})
 }
+
 func ListOneVariant(ctx *gin.Context) {
 	variantId, conv_err := strconv.Atoi(ctx.Param("id"))
 	if conv_err != nil {
@@ -48,6 +69,13 @@ func ListOneVariant(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, variants)
 }
 
+// UpdateVariant godoc
+// @Summary Update variant
+// @Description Update any variant using their id
+// @Tags /api/variants
+// @Accept  json
+// @Produce  json
+// @Router /api/variants [put]
 func UpdateVariant(ctx *gin.Context) {
 	variantId, conv_err := strconv.Atoi(ctx.Param("id"))
 	if conv_err != nil {

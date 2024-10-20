@@ -15,6 +15,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// CreateOrder godoc
+// @Summary Update order
+// @Description Create order
+// @Tags /api/orders
+// @Accept  json
+// @Param order body models.Order true "Orders data"
+// @Produce  json
+// @Router /api/orders [post]
 func CreateOrder(ctx *gin.Context) {
 	bodyAsByteArray, _ := io.ReadAll(ctx.Request.Body)
 	jsonMap := make(map[string]interface{})
@@ -27,11 +35,18 @@ func CreateOrder(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"msg": "Failed creating Order"})
 }
 
+// ListOrder godoc
+// @Summary List all orders
+// @Description List any order using their id
+// @Tags /api/orders
+// @Produce  json
+// @Router /api/orders [get]
 func ListOrder(ctx *gin.Context) {
 	var orders []models.Order
 	database.DB.Find(&orders)
 	ctx.JSON(http.StatusOK, gin.H{"data": orders})
 }
+
 func ListOneOrder(ctx *gin.Context) {
 	orderId, conv_err := strconv.Atoi(ctx.Param("id"))
 	if conv_err != nil {
@@ -48,7 +63,6 @@ func placeOrder(orderData map[string]interface{}) (orderPlaced bool) {
 	variantId := orderData["variant_id"]
 	variant := models.Variant{}
 	database.DB.First(&variant, variantId)
-
 
 	quantity, ok := orderData["quantity"].(float64)
 	if !ok {

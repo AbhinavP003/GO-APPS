@@ -11,6 +11,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// CreateCategory godoc
+// @Summary Create category
+// @Description Create category 
+// @Tags /api/category
+// @Param product body models.Category true "Category data"
+// @Accept  json
+// @Produce  json
+// @Router /api/category [post]
 func CreateCategory(ctx *gin.Context) {
 	categoryData := models.Category{}
 	err := ctx.BindJSON(&categoryData)
@@ -22,6 +30,12 @@ func CreateCategory(ctx *gin.Context) {
 	common.LogStatus(ctx, categoryData.ID, categoryData.Name, "created", result.Error, "category")
 }
 
+// DeleteCategory godoc
+// @Summary Delete category
+// @Description Delete any category using their id
+// @Tags /api/category
+// @Produce  json
+// @Router /api/category [delete]
 func DeleteCategory(ctx *gin.Context) {
 	categoryId, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
@@ -32,6 +46,12 @@ func DeleteCategory(ctx *gin.Context) {
 	common.LogStatus(ctx, uint(categoryId), "", "deleted", result.Error, "category")
 }
 
+// ListCategory godoc
+// @Summary List all categories
+// @Description List categories
+// @Tags /api/category
+// @Produce  json
+// @Router /api/category [get]
 func ListCategory(ctx *gin.Context) {
 	var categories []models.Category
 
@@ -75,6 +95,13 @@ func ListOneCategory(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, category)
 }
 
+// UpdateCategory godoc
+// @Summary Update category
+// @Description Update any category using their id
+// @Tags /api/category
+// @Accept  json
+// @Produce  json
+// @Router /api/category [put]
 func UpdateCategory(ctx *gin.Context) {
 	categoryId, conv_err := strconv.Atoi(ctx.Param("id"))
 	if conv_err != nil {

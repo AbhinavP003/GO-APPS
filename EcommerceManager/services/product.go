@@ -11,6 +11,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// CreateProduct godoc
+// @Summary Update product
+// @Description Create product
+// @Tags /api/product
+// @Accept  json
+// @Param product body models.Product true "Product data"
+// @Produce  json
+// @Router /api/product [post]
 func CreateProduct(ctx *gin.Context) {
 	productData := models.Product{}
 	err := ctx.BindJSON(&productData)
@@ -22,6 +30,12 @@ func CreateProduct(ctx *gin.Context) {
 	common.LogStatus(ctx, productData.ID, productData.Name, "created", result.Error, "product")
 }
 
+// DeleteProduct godoc
+// @Summary Delete product
+// @Description Delete any product using their id
+// @Tags /api/product
+// @Produce  json
+// @Router /api/product [delete]
 func DeleteProduct(ctx *gin.Context) {
 	productId, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
@@ -52,6 +66,13 @@ func ListOneProduct(ctx *gin.Context) {
 	// Respond with the categories in JSON format
 	ctx.JSON(http.StatusOK, products)
 }
+
+// ListProduct godoc
+// @Summary List all products
+// @Description Get a list of all products, including their variants.
+// @Tags /api/product
+// @Produce  json
+// @Router /api/product [get]
 func ListProduct(ctx *gin.Context) {
 
 	var products []models.Product
@@ -69,6 +90,13 @@ func ListProduct(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, products)
 }
 
+// UpdateProduct godoc
+// @Summary Update product
+// @Description Update any product using their id
+// @Tags /api/product
+// @Accept  json
+// @Produce  json
+// @Router /api/product [put]
 func UpdateProduct(ctx *gin.Context) {
 	productId, conv_err := strconv.Atoi(ctx.Param("id"))
 	if conv_err != nil {

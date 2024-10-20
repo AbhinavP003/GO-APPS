@@ -6,6 +6,11 @@ import (
 	"Taskmanager/EcommerceManager/logutil"
 	"log"
 
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+
+	_ "Taskmanager/EcommerceManager/docs"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -18,6 +23,7 @@ func main() {
 	sqlDb, _ := database.DB.DB()
 	defer sqlDb.Close()
 	router := gin.Default()
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	handler.RegisterCategoryApis(router)
 	handler.RegisterProductApis(router)
 	handler.RegisterVariantApis(router)
